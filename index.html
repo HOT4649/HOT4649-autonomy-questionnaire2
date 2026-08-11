@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>あなたの「理想と現実のバランス」を知るための質問票</title>
+  <style>
+    :root {
+      --bg: #f2f8ff;
+      --card: #ffffff;
+      --pink: #6fa9e8;
+      --pink-light: #e6f2ff;
+      --pink-dark: #4f86c6;
+      --lavender: #edf3ff;
+      --text: #4d4650;
+      --muted: #817985;
+      --border: #d8e7f6;
+      --shadow: 0 8px 28px rgba(160, 116, 136, 0.10);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #f1f8ff 0%, #f8fbff 100%);
+      color: var(--text);
+      font-family:
+        -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+        "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+      line-height: 1.85;
+    }
+
+    .container {
+      width: min(920px, calc(100% - 28px));
+      margin: 32px auto 60px;
+    }
+
+    header,
+    section,
+    .result-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    header {
+      padding: 34px 30px;
+      margin-bottom: 24px;
+      text-align: center;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(248, 230, 237, 0.85), transparent 30%),
+        radial-gradient(circle at 90% 20%, rgba(238, 233, 247, 0.9), transparent 30%),
+        #fff;
+    }
+
+    h1 {
+      margin: 0 0 18px;
+      color: var(--pink-dark);
+      font-size: clamp(1.45rem, 3vw, 2rem);
+      line-height: 1.5;
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      color: var(--pink-dark);
+      font-size: 1.3rem;
+    }
+
+    h3 {
+      margin: 0 0 14px;
+      color: #76566a;
+      font-size: 1.1rem;
+    }
+
+    p {
+      margin: 0 0 16px;
+    }
+
+    .intro {
+      text-align: left;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    section {
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+
+    .section-heading {
+      padding: 18px 20px;
+      border-radius: 14px;
+      background: var(--pink-light);
+      margin-bottom: 24px;
+    }
+
+    .section-heading.b {
+      background: var(--lavender);
+    }
+
+    .question {
+      padding: 20px 0;
+      border-bottom: 1px solid #f0e7eb;
+    }
+
+    .question:last-child {
+      border-bottom: 0;
+      padding-bottom: 4px;
+    }
+
+    .question-text {
+      margin-bottom: 14px;
+      font-weight: 600;
+    }
+
+    .scale {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      max-width: 600px;
+    }
+
+    .score-button {
+      width: 100%;
+      height: 48px;
+      padding: 7px 6px;
+      border: 1px solid #ddcbd3;
+      border-radius: 10px;
+      background: #ffffff;
+      color: var(--text);
+      cursor: pointer;
+      font: inherit;
+      font-size: 0.76rem;
+      line-height: 1.35;
+      transition: 0.15s ease;
+    }
+
+    .score-button:hover {
+      background: #eef6ff;
+      border-color: var(--pink);
+      transform: translateY(-1px);
+    }
+
+    .score-button.selected {
+      background: var(--pink);
+      border-color: var(--pink-dark);
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(169, 95, 124, 0.18);
+    }
+
+    .score-number {
+      display: block;
+      font-weight: 700;
+      font-size: 0.82rem;
+    }
+
+    .score-label {
+      display: block;
+      margin-top: 2px;
+    }
+
+    .result-area {
+      margin-top: 28px;
+    }
+
+    .result-card {
+      padding: 28px;
+      background:
+        linear-gradient(145deg, rgba(248, 230, 237, 0.82), rgba(238, 233, 247, 0.72)),
+        #fff;
+    }
+
+    .result-card h2 {
+      margin-bottom: 8px;
+    }
+
+    .average {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 8px;
+      margin: 8px 0 20px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+    }
+
+    .average strong {
+      color: var(--pink-dark);
+      font-size: 1.8rem;
+    }
+
+    .result-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #76566a;
+      margin-bottom: 12px;
+    }
+
+    .result-content {
+      white-space: pre-line;
+    }
+
+    .scores-summary {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .score-summary-item {
+      padding: 14px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.8);
+      border: 1px solid var(--border);
+    }
+
+    .score-summary-item strong {
+      color: var(--pink-dark);
+    }
+
+    .notice {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .bottom-note {
+      padding: 24px 28px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      white-space: pre-line;
+    }
+
+    .reset-wrap {
+      text-align: center;
+      margin-top: 18px;
+    }
+
+    .reset-button {
+      border: 1px solid #d7c3cc;
+      background: #ffffff;
+      color: #76566a;
+      border-radius: 999px;
+      padding: 8px 18px;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .reset-button:hover {
+      background: #eef6ff;
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        width: min(100% - 18px, 920px);
+        margin-top: 16px;
+      }
+
+      header,
+      section,
+      .result-card,
+      .bottom-note {
+        padding: 20px;
+        border-radius: 16px;
+      }
+
+      .scale {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .scores-summary {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>あなたの「理想と現実のバランス」を知るための質問票</h1>
+      <div class="intro">
+        <p>あなたが日々の時間を楽しく思ったり、苦しく思ったりするのは理想と現実のギャップのせいかもしれません。</p>
+        <p>この質問票は、あなたが今感じている「理想と現実のズレ」と、それを「将来どれくらい改善できると感じているか」を測定するものです。深く考える必要はありません直感でお答えください。</p>
+        <p>あなたの「理想と現実のバランス」を知るための質問票</p>
+        <p>私たちが日々の生活で「心地よい」と感じたり、逆に「苦しい」と感じたりするのは、あなたの内側にある「こうありたい（望ましい状態）」と「いまの現実」の間の距離（ギャップ）関係していると言われています。</p>
+        <p>この質問票は、そのズレの大きさと、それを自分の力でより良くしていけるという「見通し」を測定するものです。深く考える必要はありません。いまの直感で、自分というシステムを観察するように答えてみてください。</p>
+      </div>
+    </header>
+
+    <section>
+      <div class="section-heading">
+        <h2>【セクションA：現状のズレ（大きさ）】</h2>
+        <p>いまのあなたの「現実」は、「理想の状態」と比べてどのくらい離れていると感じますか？</p>
+      </div>
+      <div id="sectionA"></div>
+    </section>
+
+    <section>
+      <div class="section-heading b">
+        <h2>【セクションB：未来への見通し（はっきりとした希望）】</h2>
+        <p>将来、いまの状況を「自力活動（自分の働きかけ）」によって良くしていけるという「見通し」や「希望」は、どのくらい、はっきり持てていますか？</p>
+      </div>
+      <div id="sectionB"></div>
+    </section>
+
+    <div class="result-area">
+      <div id="result" class="result-card">
+        <h2>あなたの診断結果</h2>
+        <p>すべての質問に回答すると、ここに結果が表示されます。</p>
+      </div>
+      <div class="reset-wrap">
+        <button class="reset-button" type="button" id="resetButton">回答をリセット</button>
+      </div>
+    </div>
+
+    <div class="bottom-note" style="margin-top:24px;">
+      ※この統計結果は、セルフレギュレーション（自立性）の度合いが、長期的な健康維持に深く関わっていることを示しています。平均点が低い場合でも、オートノミートレーニングによる「行動の切り替え」で、この数値は改善していくことが可能です。
+      ※ハイデルベルグ前向き研究（1978-1988）より
+    </div>
+  </main>
+
+  <script>
+    const sectionAQuestions = [
+      "1. 幸せのレベル：あなたが「これこそが私の幸せだ」と願う状態と、いま実感している幸せの間には、どのくらいの差がありますか？",
+      "2. 理想の行動：自分にとって大切な目標があるとき、「こう動きたい自分」と「実際の自分の動き」の間には、どのくらいの差がありますか？",
+      "3. 日々の満足感：あなたが心から求めている「楽しさや満足感」と、実際に毎日の中で体験している心地よさの間には、どのくらいの差がありますか？",
+      "4. 心の安定感：「自分は大丈夫だ」という自信や安心感の理想と、いま感じている不安や自信のなさの間には、どのくらいの差がありますか？",
+      "5. 生活の安定感：仕事・お金・人間関係など、社会的なつながりにおける「理想の安定」と「いまの状況」の間には、どのくらいの差がありますか？",
+      "6. 願いを叶える力：あなたにとって、どうしても叶えたい大切な願い。その願いと、実際に「いま、チャンスを掴めている」という実感の間には、どのくらいの差がありますか？"
+    ];
+
+    const sectionBQuestions = [
+      "1. 幸せを創る力：将来、自分はもっと幸せな状態を自分で作り出していけるという希望は、どのくらい明確ですか？",
+      "2. 自分を変える力：目標を達成するために、これから先、自分の行動パターンをいつでも、何度でも新しく切り替えていける（転轍の切り替え）という自信は、どのくらい明確ですか？",
+      "3. 心地よさの向上：将来、自分の人生に「楽しさ」や「心地よい刺激」をもっと増やしていけるという見通しは、どのくらいはっきりしていますか？",
+      "4. 心の回復力：将来、もっと自分に対する信頼を深め、心を安定させていけるというイメージは、どのくらい明確ですか？",
+      "5. 状況の好転：将来、仕事や人間関係などの社会的な状況を、自分の力でより良い方向へ調整していけるという希望は、どのくらいはっきりしていますか？",
+      "6. 本音の実現：将来、自分にとって本当に大切で、感情的にゆずれない願いや欲求を、しっかりと満たしていけるという見通しは、どのくらい明確ですか？"
+    ];
+
+    const scaleA = [
+      [0, "ものすごく大きい（理想と現実がかけ離れている）"],
+      [1, "かなり大きい"],
+      [2, "大きい"],
+      [3, "やや大きい"],
+      [4, "少しある"],
+      [5, "小さい"],
+      [6, "ごくわずか"],
+      [7, "ほとんどない（理想通りである）"]
+    ];
+
+    const scaleB = [
+      [7, "確信がある（とてもはっきりしている）"],
+      [6, "かなりはっきりしている"],
+      [5, "はっきりしている"],
+      [4, "まあまあ、はっきりしている"],
+      [3, "あまり、はっきりしていない"],
+      [2, "ほとんど、はっきりしていない"],
+      [1, "見通しが立たない"],
+      [0, "全くイメージできない（希望がない）"]
+    ];
+
+    const answers = {
+      A: Array(6).fill(null),
+      B: Array(6).fill(null)
+    };
+
+    function createQuestions(containerId, questions, scale, sectionKey) {
+      const container = document.getElementById(containerId);
+
+      questions.forEach((question, index) => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "question";
+
+        const text = document.createElement("div");
+        text.className = "question-text";
+        text.textContent = question;
+        wrapper.appendChild(text);
+
+        const scaleWrap = document.createElement("div");
+        scaleWrap.className = "scale";
+        scaleWrap.setAttribute("role", "group");
+        scaleWrap.setAttribute("aria-label", `${sectionKey} ${index + 1}の回答`);
+
+        scale.forEach(([score, label]) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "score-button";
+          button.innerHTML = `<span class="score-number">${score}点</span><span class="score-label">${label}</span>`;
+
+          button.addEventListener("click", () => {
+            answers[sectionKey][index] = score;
+
+            [...scaleWrap.children].forEach(child => {
+              child.classList.remove("selected");
+              child.setAttribute("aria-pressed", "false");
+            });
+
+            button.classList.add("selected");
+            button.setAttribute("aria-pressed", "true");
+            updateResult();
+          });
+
+          button.setAttribute("aria-pressed", "false");
+          scaleWrap.appendChild(button);
+        });
+
+        wrapper.appendChild(scaleWrap);
+        container.appendChild(wrapper);
+      });
+    }
+
+    const resultTexts = [
+      {
+        min: 0,
+        max: 2,
+        title: "■ 0点以上 〜 2点未満：【心身のSOS】自分を救うため、今ここから「レールの切り替え」が必要な状態",
+        text: `現状、理想と現実の乖離が極めて大きく、心身を支えるエネルギーが枯渇しています。この状態は、重要な欲求が理性から切り離された状態にある可能性が高いです。
+
+- 10年後の生存・健康率：約6％
+- 死亡率：63〜71％ ／ 慢性疾患リスク：約30〜34％
+  【オートノミートレーナーからのアドバイス】 あなたは他者の期待や過酷な環境に「過剰に適応」し、自分自身を置き去りにしていませんか？。心身の疲弊や絶望感は、あなたの命を守るための「非常ベル」です。 しかし、無理に前を向く必要はありません。まずは不快な対象から「距離を置く」こと、そして自分を慈しみ護る「自己愛的保護」を最優先してください。自分に「Yes」と言える小さな選択から、あなたの再生が始まります。`
+      },
+      {
+        min: 2,
+        max: 3.5,
+        title: "■ 2点以上 〜 3.5点未満：【健康の曲がり角】「試行錯誤」でストレスを解消する段階",
+        text: `日常的な不満や苛立ちが慢性化し、セルフレギュレーション（自立性）が十分に機能しきれていない状態です。欲求が満たされないことで、飲酒や大食などの代償的行動が現れやすい時期でもあります。
+
+- 10年後の生存・健康率：約23〜27％
+- 死亡率：28〜45％ ／ 慢性疾患リスク：約31〜43％
+  【オートノミートレーナーからのアドバイス】 今の「うまくいかない行動パターン」を繰り返す必要はありません。オートノミートレーニングの核心は「試行錯誤」です。 「あれかこれか」と自分を追い詰める二者択一を捨て、「あれもこれも」大切にする柔軟な思考を取り入れてみてください。物事の「解釈や価値判断を少し変更する」だけで、脳の中枢神経系の興奮は和らぎます。あなたが想像するだけで心地よくなる小さくてもいい「新たな行動」を見つける「トライ」をしてみましょう。その試み自体が健康数値を劇的に改善する鍵となります。`
+      },
+      {
+        min: 3.5,
+        max: 5,
+        title: "■ 3.5点以上 〜 5点未満：【自律の芽生え】「コントロールされた快」を育てる段階",
+        text: `自分を心地よい状態に導く力が備わっており、半数以上の方が10年後も元気に過ごせる良好な水準です。「楽しいことは健康に良い」という原則が、あなたの体で実証され始めています。
+
+- 10年後の生存・健康率：約51〜66％
+- 死亡率：約15％ ／ 慢性疾患リスク：約18〜32％
+  【オートノミートレーナーからのアドバイス】
+  あなたは、自分の行動で状況を変えられるという自信（固有の能力）を持ち始めています。 ここからさらに健康維持力を高めるコツは、偶然のラッキーに頼るのではなく、自分の力で再現できる「コントロールされた快」を日常のルーチンに組み込むことです。一つの領域でのポジティブな体験は、必ず他の生活領域へと拡大していきます。自分の「無意識」に「本当は何を望んでいる？」と問いかけ、意識と無意識が協力して幸福を追求できる体制を整えていきましょう。`
+      },
+      {
+        min: 5,
+        max: 7.000001,
+        title: "■ 5点以上 〜 7点：【心身の黄金バランス】あなたが自身が、自分の人生の「クリエイティブなアーティスト」である状態",
+        text: `オートノミー性が極めて高く、自力で幸福感と精神的平衡を創り出せています。あなたの「生きる意志」が細胞を活性化し、高い生存率と健康寿命を支えています。
+
+- 10年後の生存・健康率：約78〜82％
+- 死亡率：約5〜6％ ／ 慢性疾患リスク：約12〜14％
+  【トレーナーからのアドバイス】
+  あなたは自分自身の人生における「クリエイティブなアーティスト」であり、最高のセルフレギュレーションのエキスパートです。 たとえ今後、困難な状況が訪れたとしても、あなたならそれを成長の糧へと変えていけるはずです。今の心地よいリズムを大切にしながら、その豊かな愛のエネルギーを自分だけでなく、周囲や社会との絆を深めるためにも使ってみてください。あなたがリラックスして存在していること自体が、周囲の人々のセルフレギュレーションを刺激する希望の光となります。`
+      }
+    ];
+
+    function getResult(avg) {
+      return resultTexts.find(result => avg >= result.min && avg < result.max);
+    }
+
+    function updateResult() {
+      const result = document.getElementById("result");
+
+      const allAnswered =
+        answers.A.every(score => score !== null) &&
+        answers.B.every(score => score !== null);
+
+      if (!allAnswered) {
+        const answeredA = answers.A.filter(score => score !== null).length;
+        const answeredB = answers.B.filter(score => score !== null).length;
+
+        result.innerHTML = `
+          <h2>あなたの診断結果：</h2>
+          <p>すべての質問に回答すると、平均点と診断結果が表示されます。</p>
+        `;
+        return;
+      }
+
+      const totalA = answers.A.reduce((sum, score) => sum + score, 0);
+      const totalB = answers.B.reduce((sum, score) => sum + score, 0);
+      const average = (totalA + totalB) / 12;
+      const resultData = getResult(average);
+
+      result.innerHTML = `
+        <h2>あなたの診断結果：</h2>
+        <div class="average">
+          <span>平均点</span>
+          <strong>${average.toFixed(2)}</strong>
+          <span>点</span>
+        </div>
+        <div class="result-title">${resultData.title}</div>
+        <div class="result-content">${escapeHtml(resultData.text)}</div>
+      `;
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    document.getElementById("resetButton").addEventListener("click", () => {
+      answers.A.fill(null);
+      answers.B.fill(null);
+
+      document.querySelectorAll(".score-button").forEach(button => {
+        button.classList.remove("selected");
+        button.setAttribute("aria-pressed", "false");
+      });
+
+      updateResult();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    createQuestions("sectionA", sectionAQuestions, scaleA, "A");
+    createQuestions("sectionB", sectionBQuestions, scaleB, "B");
+    updateResult();
+  </script>
+</body>
+</html>
