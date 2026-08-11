@@ -15,7 +15,7 @@
       --text: #4d4650;
       --muted: #817985;
       --border: #d8e7f6;
-      --shadow: 0 8px 28px rgba(160, 116, 136, 0.10);
+      --shadow: 0 8px 28px rgba(83, 132, 184, 0.10);
     }
 
     * {
@@ -51,8 +51,8 @@
       margin-bottom: 24px;
       text-align: center;
       background:
-        radial-gradient(circle at 10% 10%, rgba(248, 230, 237, 0.85), transparent 30%),
-        radial-gradient(circle at 90% 20%, rgba(238, 233, 247, 0.9), transparent 30%),
+        radial-gradient(circle at 10% 10%, rgba(218, 238, 255, 0.90), transparent 30%),
+        radial-gradient(circle at 90% 20%, rgba(231, 242, 255, 0.95), transparent 30%),
         #fff;
     }
 
@@ -71,7 +71,7 @@
 
     h3 {
       margin: 0 0 14px;
-      color: #76566a;
+      color: #4f7399;
       font-size: 1.1rem;
     }
 
@@ -103,7 +103,7 @@
 
     .question {
       padding: 20px 0;
-      border-bottom: 1px solid #f0e7eb;
+      border-bottom: 1px solid #e2edf7;
     }
 
     .question:last-child {
@@ -120,22 +120,28 @@
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 8px;
-      max-width: 600px;
+      max-width: 720px;
     }
 
     .score-button {
       width: 100%;
-      height: 48px;
-      padding: 7px 6px;
-      border: 1px solid #ddcbd3;
+      height: 66px;
+      min-width: 0;
+      padding: 5px 6px;
+      border: 1px solid #cbdced;
       border-radius: 10px;
       background: #ffffff;
       color: var(--text);
       cursor: pointer;
       font: inherit;
-      font-size: 0.76rem;
-      line-height: 1.35;
+      font-size: 0.68rem;
+      line-height: 1.25;
       transition: 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
     }
 
     .score-button:hover {
@@ -148,18 +154,24 @@
       background: var(--pink);
       border-color: var(--pink-dark);
       color: #fff;
-      box-shadow: 0 4px 10px rgba(169, 95, 124, 0.18);
+      box-shadow: 0 4px 10px rgba(79, 134, 198, 0.18);
     }
 
     .score-number {
       display: block;
       font-weight: 700;
-      font-size: 0.82rem;
+      font-size: 0.78rem;
+      line-height: 1.1;
+      flex: 0 0 auto;
     }
 
     .score-label {
       display: block;
       margin-top: 2px;
+      font-size: 0.66rem;
+      line-height: 1.2;
+      overflow-wrap: anywhere;
+      text-align: center;
     }
 
     .result-area {
@@ -196,7 +208,7 @@
     .result-title {
       font-size: 1.3rem;
       font-weight: 700;
-      color: #76566a;
+      color: #4f7399;
       margin-bottom: 12px;
     }
 
@@ -204,23 +216,6 @@
       white-space: pre-line;
     }
 
-    .scores-summary {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
-    .score-summary-item {
-      padding: 14px;
-      border-radius: 12px;
-      background: rgba(255,255,255,0.8);
-      border: 1px solid var(--border);
-    }
-
-    .score-summary-item strong {
-      color: var(--pink-dark);
-    }
 
     .notice {
       margin-top: 18px;
@@ -243,9 +238,9 @@
     }
 
     .reset-button {
-      border: 1px solid #d7c3cc;
+      border: 1px solid #c7d9ea;
       background: #ffffff;
-      color: #76566a;
+      color: #4f7399;
       border-radius: 999px;
       padding: 8px 18px;
       cursor: pointer;
@@ -272,10 +267,16 @@
 
       .scale {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+        max-width: 100%;
       }
 
-      .scores-summary {
-        grid-template-columns: 1fr;
+      .score-button {
+        height: 66px;
+        font-size: 0.67rem;
+      }
+
+      .score-label {
+        font-size: 0.64rem;
       }
     }
   </style>
@@ -285,9 +286,6 @@
     <header>
       <h1>あなたの「理想と現実のバランス」を知るための質問票</h1>
       <div class="intro">
-        <p>あなたが日々の時間を楽しく思ったり、苦しく思ったりするのは理想と現実のギャップのせいかもしれません。</p>
-        <p>この質問票は、あなたが今感じている「理想と現実のズレ」と、それを「将来どれくらい改善できると感じているか」を測定するものです。深く考える必要はありません直感でお答えください。</p>
-        <p>あなたの「理想と現実のバランス」を知るための質問票</p>
         <p>私たちが日々の生活で「心地よい」と感じたり、逆に「苦しい」と感じたりするのは、あなたの内側にある「こうありたい（望ましい状態）」と「いまの現実」の間の距離（ギャップ）関係していると言われています。</p>
         <p>この質問票は、そのズレの大きさと、それを自分の力でより良くしていけるという「見通し」を測定するものです。深く考える必要はありません。いまの直感で、自分というシステムを観察するように答えてみてください。</p>
       </div>
@@ -320,7 +318,8 @@
     </div>
 
     <div class="bottom-note" style="margin-top:24px;">
-      ※この統計結果は、セルフレギュレーション（自立性）の度合いが、長期的な健康維持に深く関わっていることを示しています。平均点が低い場合でも、オートノミートレーニングによる「行動の切り替え」で、この数値は改善していくことが可能です。
+      ※この統計結果は、セルフレギュレーション（自立性）の度合いが、長期的な健康維持に深く関わっていることを示しています。
+      ※平均点が低い場合でも、オートノミートレーニングによる「ちょっとした行動の切り替え」で、この数値は改善していくことが可能です。
       ※ハイデルベルグ前向き研究（1978-1988）より
     </div>
   </main>
